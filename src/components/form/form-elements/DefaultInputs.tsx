@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from 'react';
-import ComponentCard from '../../common/ComponentCard';
-import Label from '../Label';
-import Input from '../input/InputField';
-import Select from '../Select';
-import { ChevronDownIcon, EyeCloseIcon, EyeIcon, TimeIcon } from '../../../icons';
+import { useState } from 'react';
+
+import ComponentCard from '@/components/common/ComponentCard'; 
+import Label from '@/components/form/Label';
+import Input from '@/components/form/input/InputField';
+import Select from '@/components/form/Select';
 import DatePicker from '@/components/form/date-picker';
+
+import { ChevronDownIcon, EyeCloseIcon, EyeIcon, TimeIcon } from '@/icons';
 
 export default function DefaultInputs() {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,7 +70,6 @@ export default function DefaultInputs() {
             label="Date Picker Input"
             placeholder="Select a date"
             onChange={(dates, currentDateString) => {
-              // Handle your logic
               console.log({ dates, currentDateString });
             }}
           />
