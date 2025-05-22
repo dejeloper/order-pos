@@ -22,14 +22,10 @@ export default function SignInForm() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    try {
-      await loginService({ username, password });
-      alert("Login exitoso");
-    } catch (err: any) {
-      setError(err.message || "Error al iniciar sesión");
-    } finally {
-      setLoading(false);
-    }
+     
+    await loginService({ username, password });
+    alert("Login exitoso");
+    setLoading(false); 
   };
 
   return (
