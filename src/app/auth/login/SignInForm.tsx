@@ -56,12 +56,9 @@ export default function SignInForm() {
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Checkbox checked={isChecked} onChange={setIsChecked} />
-          <span className="text-sm text-gray-700 dark:text-gray-400">
-            Mantener mi sesión
-          </span>
+          <Checkbox checked={isChecked} onChange={setIsChecked} disabled={true} label="Mantener mi sesión (No disponible)" classNameLabel="text-sm text-gray-700 dark:text-gray-400" />  
         </div>
-        <Link href="/reset-password" className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400">
+        <Link href="/#reset-password" className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400">
           ¿Olvidó su contraseña?
         </Link>
       </div>
