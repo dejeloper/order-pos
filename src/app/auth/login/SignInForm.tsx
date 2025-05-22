@@ -22,10 +22,17 @@ export default function SignInForm() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-     
-    await loginService({ username, password });
+
+    const result = await loginService({ username, password });
+
+    if (!result) {
+      setError("Usuario o contraseña incorrectos");
+      setLoading(false);
+      return;
+    }
+
     alert("Login exitoso");
-    setLoading(false); 
+    setLoading(false);
   };
 
   return (
