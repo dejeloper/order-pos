@@ -5,7 +5,7 @@ interface InputProps {
   id?: string;
   name?: string;
   placeholder?: string;
-  defaultValue?: string | number;
+  defaultValue?: string | number; 
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   min?: string;
@@ -14,6 +14,7 @@ interface InputProps {
   disabled?: boolean;
   success?: boolean;
   error?: boolean;
+  autoComplete?: string; // Auto-complete attribute for the input
   hint?: string; // Optional hint text
 }
 
@@ -22,7 +23,7 @@ const Input: FC<InputProps> = ({
   id,
   name,
   placeholder,
-  defaultValue,
+  defaultValue, 
   onChange,
   className = "",
   min,
@@ -31,6 +32,7 @@ const Input: FC<InputProps> = ({
   disabled = false,
   success = false,
   error = false,
+  autoComplete = "off",
   hint,
 }) => {
   // Determine input styles based on state (disabled, success, error)
@@ -54,13 +56,14 @@ const Input: FC<InputProps> = ({
         id={id}
         name={name}
         placeholder={placeholder}
-        defaultValue={defaultValue}
+        defaultValue={defaultValue} 
         onChange={onChange}
         min={min}
         max={max}
         step={step}
         disabled={disabled}
         className={inputClasses}
+        autoComplete={autoComplete}
       />
 
       {/* Optional Hint Text */}
