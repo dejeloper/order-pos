@@ -21,7 +21,10 @@ export async function loginService({username, password}: {username: string; pass
 		}
 
 		return data;
-	} catch (error: any) {
-		throw new Error(error.message || "Error en el servicio de login");
+	} catch (error: unknown) {
+		if (error && typeof error === "object" && "message" in error) {
+			throw new Error((error as {message?: string}).message || "Error en el servicio de login");
+		}
+		throw new Error("Error en el servicio de login");
 	}
 }
