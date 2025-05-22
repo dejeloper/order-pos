@@ -1,5 +1,11 @@
+import {Metadata} from "next";
 import Link from "next/link";
 import SignInForm from "./SignInForm";
+
+export const metadata: Metadata = {
+  title: "Login - OrderPos",
+  description: "Ingrese a OrderPos",
+};
 
 export default function LoginPage() { 
    return (
