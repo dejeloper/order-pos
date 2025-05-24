@@ -14,7 +14,7 @@ const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   const lastIndex = items.length - 1;
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div className="flex flex-wrap items-center justify-between gap-3 mb-6 px-0 md:px-5">
       <h2 className="text-xl font-semibold text-gray-800 dark:text-white/90">
         {items[lastIndex].name}
       </h2>
