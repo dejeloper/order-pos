@@ -1,6 +1,6 @@
-import { EyeIcon, EyeCloseIcon } from "@/icons";
-import Input from "@/components/form/input/InputField";
+import { EyeIcon, EyeCloseIcon } from "@/icons"; 
 import { useState } from "react";
+import {Input} from "../input";
 
 interface PasswordFieldProps {
   value: string;
