@@ -7,9 +7,9 @@ export const metadata: Metadata = {
   description: "Ingrese a OrderPos",
 };
 
-export default function LoginPage() { 
-   return (
-    <div className="flex flex-col flex-1 lg:w-1/2 w-full"> 
+export default function LoginPage() {
+  return (
+    <div className="flex flex-col flex-1 lg:w-1/2 w-full">
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <div className="mb-5 sm:mb-8">
@@ -20,7 +20,7 @@ export default function LoginPage() {
               Ingresa tu usuario y contraseña para acceder a tu cuenta.
             </p>
           </div>
-          <div>  
+          <div>
             <SignInForm />
 
             <div className="mt-5">
