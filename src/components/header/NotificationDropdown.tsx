@@ -40,7 +40,7 @@ const notifications = [
   },
   {
     id: 4,
-    user: "Brandon Philips",
+    user: "cyanon Philips",
     userImg: "/images/user/user-05.jpg",
     statusColor: "bg-error-500",
     message: "solicita permiso para modificar el",

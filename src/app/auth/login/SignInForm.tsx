@@ -106,7 +106,7 @@ export default function SignInForm() {
         </div>
         <Link
           href="/#reset-password"
-          className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+          className="text-sm text-cyan-500 hover:text-cyan-600 dark:text-cyan-400"
         >
           ¿Olvidó su contraseña?
         </Link>

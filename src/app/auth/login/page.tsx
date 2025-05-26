@@ -28,7 +28,7 @@ export default function LoginPage() {
                 ¿No tiene cuenta? &nbsp;
                 <Link
                   href="/signup"
-                  className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                  className="text-cyan-500 hover:text-cyan-600 dark:text-cyan-400"
                 >
                   Solicitar acceso
                 </Link>
