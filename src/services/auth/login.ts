@@ -11,7 +11,9 @@ export async function loginService({username, password}: {username: string; pass
 		});
 
 		if (!res.ok) {
-			throw new Error("Usuario o contraseña incorrectos");
+			const errorData = await res.json().catch(() => null);
+			const message = errorData?.message || "Usuario o contraseña incorrectos";
+			throw new Error(message);
 		}
 
 		const data: LoginResponse = await res.json();
