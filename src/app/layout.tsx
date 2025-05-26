@@ -1,8 +1,8 @@
-import { Outfit } from 'next/font/google';
+import {Outfit} from 'next/font/google';
 import './globals.css';
 
-import { SidebarProvider } from '@/context/SidebarContext';
-import { ThemeProvider } from '@/context/ThemeContext';
+import {SidebarProvider} from '@/context/SidebarContext';
+import {ThemeProvider} from '@/context/ThemeContext';
 import Head from 'next/head';
 
 const outfit = Outfit({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" translate='no'>
+    <html lang="es" translate='no' suppressHydrationWarning>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -34,4 +34,3 @@ export default function RootLayout({
     </html>
   );
 }
- 

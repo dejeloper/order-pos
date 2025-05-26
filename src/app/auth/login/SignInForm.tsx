@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 import toast from "react-hot-toast";
@@ -7,13 +8,13 @@ import {zodResolver} from "@hookform/resolvers/zod";
 
 import {LoginData, loginSchema} from "@/schemas/auth/loginSchema";
 import {loginService} from "@/services/auth";
+import {useAuthStore} from "@/stores/authStore";
 
 import PasswordField from "@/components/ui/PasswordField/PasswordField";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
-import Link from "next/link";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -35,9 +36,18 @@ export default function SignInForm() {
     try {
       const result = await loginService(data);
 
-      localStorage.setItem("auth_token", result.token);
-      toast.success("Inicio de sesión exitoso");
-      router.push("/home");
+      if (result?.token) {
+        useAuthStore.getState().setToken(result.token);
+        toast.success("Inicio de sesión exitoso");
+        router.push("/home");
+      } else {
+        toast.error("No se recibió un token válido del servidor");
+        setError("root", {
+          type: "manual",
+          message: "No se recibió un token válido del servidor",
+        });
+        throw new Error("No se recibió un token válido del servidor");
+      }
     } catch (error: unknown) {
       const message =
         error && typeof error === "object" && "message" in error
@@ -53,7 +63,6 @@ export default function SignInForm() {
     }
   };
 
-  https://chatgpt.com/c/682e7dc4-68b0-8009-90b9-2d4bca575851
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
