@@ -116,7 +116,7 @@ export default function SignInForm() {
         <div className="text-sm text-error-500">{errors.root.message}</div>
       )}
 
-      <Button className="w-full" disabled={isSubmitting}>
+      <Button className="w-full" disabled={isSubmitting} variant={"cyan"} size={"full"}>
         {isSubmitting ? "Iniciando..." : "Iniciar"}
       </Button>
     </form>
