@@ -1,75 +1,114 @@
-'use client';
+"use client";
 
-import { useState } from "react"; 
-import Link from "next/link";
+import {useRouter} from "next/navigation";
+import {useForm} from "react-hook-form";
+import toast from "react-hot-toast";
+import {zodResolver} from "@hookform/resolvers/zod";
 
-import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
-import Checkbox from "@/components/form/input/Checkbox";
-import Button from "@/components/ui/button/Button";
-import PasswordField from "@/components/ui/PasswordField/PasswordField";
-
+import {LoginData, loginSchema} from "@/schemas/auth/loginSchema";
 import {loginService} from "@/services/auth";
 
+import PasswordField from "@/components/ui/PasswordField/PasswordField";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Button} from "@/components/ui/button";
+import Link from "next/link";
+
 export default function SignInForm() {
-  const [username, setUsername] = useState("Jhonatan");
-  const [password, setPassword] = useState("Password01*"); 
-  const [isChecked, setIsChecked] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  const {
+    register,
+    handleSubmit,
+    formState: {errors, isSubmitting},
+    setError,
+  } = useForm<LoginData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "Jhonatan",
+      password: "Password01*",
+    },
+  });
 
-    const result = await loginService({ username, password });
+  const onSubmit = async (data: LoginData) => {
+    try {
+      const result = await loginService(data);
 
-    if (!result) {
-      setError("Usuario o contraseña incorrectos");
-      setLoading(false);
-      return;
+      localStorage.setItem("auth_token", result.token);
+      toast.success("Inicio de sesión exitoso");
+      router.push("/home");
+    } catch (error: unknown) {
+      const message =
+        error && typeof error === "object" && "message" in error
+          ? (error as {message?: string}).message
+          : "Error inesperado";
+
+      toast.error(message || "Error inesperado");
+
+      setError("root", {
+        type: "manual",
+        message: message || "Error inesperado",
+      });
     }
-
-    alert("Login exitoso");
-    setLoading(false);
   };
 
+  https://chatgpt.com/c/682e7dc4-68b0-8009-90b9-2d4bca575851
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
-        <Label>Usuario <span className="text-error-500">*</span></Label>
+        <Label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+          Usuario <span className="text-error-500">*</span>
+        </Label>
         <Input
           type="text"
-          placeholder="mi_usuario"
-          defaultValue={username}
-          onChange={e => setUsername(e.target.value)}
+          placeholder="Usuario"
           autoComplete="username"
+          {...register("username")}
         />
+        {errors.username && (
+          <p className="text-sm text-error-500 mt-1">{errors.username.message}</p>
+        )}
       </div>
 
       <div>
-        <Label>Contraseña <span className="text-error-500">*</span></Label>
+        <Label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+          Contraseña <span className="text-error-500">*</span>
+        </Label>
         <PasswordField
-          value={password}
-          onChange={e => setPassword(e.target.value)}
           placeholder="Ingrese su contraseña"
+          {...register("password")}
         />
+        {errors.password && (
+          <p className="text-sm text-error-500 mt-1">{errors.password.message}</p>
+        )}
       </div>
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Checkbox checked={isChecked} onChange={setIsChecked} disabled={true} label="Mantener mi sesión (No disponible)" classNameLabel="text-sm text-gray-700 dark:text-gray-400" />  
+          <Checkbox id="remember" />
+          <label
+            htmlFor="remember"
+            className="text-sm font-medium text-gray-700 dark:text-gray-400"
+          >
+            Mantener mi sesión (No disponible)
+          </label>
         </div>
-        <Link href="/#reset-password" className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400">
+        <Link
+          href="/#reset-password"
+          className="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400"
+        >
           ¿Olvidó su contraseña?
         </Link>
       </div>
 
-      {error && <div className="text-sm text-error-500">{error}</div>}
+      {errors.root?.message && (
+        <div className="text-sm text-error-500">{errors.root.message}</div>
+      )}
 
-      <Button className="w-full" disabled={loading}>
-        {loading ? "Iniciando..." : "Iniciar"}
+      <Button className="w-full" disabled={isSubmitting}>
+        {isSubmitting ? "Iniciando..." : "Iniciar"}
       </Button>
     </form>
   );
