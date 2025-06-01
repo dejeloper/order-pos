@@ -32,6 +32,7 @@ const navItems: NavItem[] = [
       {name: "Lista de Productos", path: "/products", pro: false},
       {name: "Crear Producto", path: "/products/create", pro: false},
       {name: "Editar Producto", path: "/products/edit", pro: false},
+      {name: "Eliminar Producto", path: "/products/delete", pro: false},
     ],
   }
 ];
