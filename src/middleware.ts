@@ -2,10 +2,10 @@ import {NextResponse} from "next/server";
 import type {NextRequest} from "next/server";
 import {jwtVerify} from "jose";
 
-export async function middleware(request: NextRequest) {
-	const {pathname} = request.nextUrl;
+const PUBLIC_ROUTES = ["/auth/login", "/auth/logout"];
 
-	const PUBLIC_ROUTES = ["/auth/login", "/auth/logout"];
+export async function middleware(request: NextRequest) {
+	const {pathname} = request.nextUrl;;
 
 	if (PUBLIC_ROUTES.includes(pathname)) {
 		return NextResponse.next();
@@ -13,7 +13,6 @@ export async function middleware(request: NextRequest) {
 
 	const token = request.cookies.get("auth_token")?.value;
 	if (!token) {
-		debugger
 		return NextResponse.redirect(new URL("/auth/login", request.url));
 	}
 
@@ -24,13 +23,12 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	} catch (error) {
 		console.error("Error al verificar JWT:", error);
-		debugger
 		return NextResponse.redirect(new URL("/auth/login", request.url));
 	}
 }
 
 export const config = {
 	matcher: [
-		"/((?!_next/static|_next/image|favicon.ico|auth/.*).*)",
+		"/((?!_next/static|_next/image|favicon.ico|auth|images/.*).*)",
 	],
 };
