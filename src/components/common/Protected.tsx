@@ -1,9 +1,12 @@
 'use client';
 
-import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
-import {useAuthStore} from "@/stores/authStore";
+import {useRouter} from "next/navigation";
+import {usePathname} from 'next/navigation'
+
 import {decodeJwt, JwtPayload} from "@/helpers/jwt";
+import {useAuthStore} from "@/stores/authStore";
+import {useErrorStore} from "@/stores/errorStore";
 
 interface ProtectedProps {
 	children: React.ReactNode;
@@ -17,6 +20,7 @@ export default function Protected({children, requiredPermission, requiredRole, }
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasAccess, setHasAccess] = useState(false);
 	const [isStoreReady, setIsStoreReady] = useState(false);
+	const pathname = usePathname()
 
 	useEffect(() => {
 		setIsStoreReady(true);
@@ -27,7 +31,6 @@ export default function Protected({children, requiredPermission, requiredRole, }
 		if (!isStoreReady) return;
 
 		if (!isAuthenticated || !token) {
-			debugger
 			router.push("/auth/login");
 			return;
 		}
@@ -35,24 +38,36 @@ export default function Protected({children, requiredPermission, requiredRole, }
 		const verifyAccess = () => {
 			try {
 				const payload: JwtPayload = decodeJwt(token);
-				const {roles = [], permissions = []} = payload;
+				const {role = '', permissions = []} = payload;
 
-				if (requiredPermission && !permissions.includes(requiredPermission)) {
-					console.warn(`Falta permiso: ${requiredPermission}`);
+
+				if (!requiredPermission && !requiredRole) {
+					setHasAccess(false);
+					useErrorStore.getState().setError("El componente requiere al menos 1 permiso o 1 rol.", pathname);
 					router.push("/no-access");
 					return;
 				}
 
-				if (requiredRole && !roles.includes(requiredRole)) {
-					console.warn(`Falta rol: ${requiredRole}`);
+				if (requiredPermission && !permissions.includes(requiredPermission)) {
+					useErrorStore.getState().setError(`Falta permiso: ${requiredPermission}`, pathname);
 					router.push("/no-access");
 					return;
+				}
+
+				if (requiredRole) {
+					const requiredRoles = requiredRole.split(",").map(r => r.trim());
+					const hasAnyRole = requiredRoles.includes(role);
+					if (!hasAnyRole) {
+						useErrorStore.getState().setError(`Falta rol: ${requiredRole}`, pathname);
+						router.push("/no-access");
+						return;
+					}
 				}
 
 				setHasAccess(true);
 			} catch (error) {
 				console.error("Error al decodificar el token:", error);
-				debugger
+				useErrorStore.getState().setError("Error al verificar el acceso. Por favor, inicia sesión nuevamente.", pathname);
 				router.push("/auth/login");
 			} finally {
 				setIsLoading(false);
@@ -66,6 +81,7 @@ export default function Protected({children, requiredPermission, requiredRole, }
 		requiredPermission,
 		requiredRole,
 		router,
+		pathname
 	]);
 
 	if (isLoading) {

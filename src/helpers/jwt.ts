@@ -1,5 +1,5 @@
 export interface JwtPayload {
-	roles?: string[];
+	role?: string;
 	permissions?: string[];
 	[key: string]: unknown;
 }
