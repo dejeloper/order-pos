@@ -12,9 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {useAuthStore} from "@/stores/authStore";
 
 export default function UserDropdown() {
   const [open, setOpen] = React.useState(false);
+  const {user} = useAuthStore();
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -27,7 +29,7 @@ export default function UserDropdown() {
             <AvatarImage src="/images/user/owner.jpg" alt="User" />
             <AvatarFallback>JG</AvatarFallback>
           </Avatar>
-          <span className="block mr-1 font-medium text-theme-sm">Jhonatan</span>
+          <span className="block mr-1 font-medium text-theme-sm">{user?.username}</span>
           <svg
             className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""
               }`}
@@ -51,10 +53,10 @@ export default function UserDropdown() {
         <DropdownMenuLabel>
           <div className="flex flex-col px-3">
             <span className="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-              Jhonatan Guerrero
+              {user?.name}
             </span>
             <span className="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">
-              jhonatanguerrero@outlook.com
+              Administrador
             </span>
           </div>
         </DropdownMenuLabel>

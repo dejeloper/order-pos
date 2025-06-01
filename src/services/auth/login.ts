@@ -1,5 +1,8 @@
+import {AuthUser} from "@/interfaces/Auth";
+
 interface LoginResponse {
 	token: string;
+	user: AuthUser
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;

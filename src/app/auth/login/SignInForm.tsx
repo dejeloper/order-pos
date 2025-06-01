@@ -37,7 +37,7 @@ export default function SignInForm() {
       const result = await loginService(data);
 
       if (result?.token) {
-        useAuthStore.getState().setToken(result.token);
+        useAuthStore.getState().setAuth(result.token, result.user);
         toast.success("Inicio de sesión exitoso");
         router.push("/home");
       } else {
