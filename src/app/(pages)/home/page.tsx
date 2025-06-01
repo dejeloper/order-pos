@@ -1,12 +1,6 @@
-import {Metadata} from "next";
 
 import PagesWrapper from "@/components/common/Wrapper";
 import IsAuthenticated from "./isAuthenticated";
-
-export const metadata: Metadata = {
-  title: "Inicio - OrderPos",
-  description: "Página de Inicio de OrderPos",
-};
 
 export default function HomePage() {
   const breadcrumbItems = [
