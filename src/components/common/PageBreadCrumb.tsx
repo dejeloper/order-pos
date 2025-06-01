@@ -3,14 +3,14 @@ import React from "react";
 
 interface BreadcrumbItem {
   name: string;
-  href?: string;  
+  href?: string;
 }
 
 interface BreadcrumbProps {
   items: BreadcrumbItem[];
 }
 
-const PageBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
+const PageBreadcrumb: React.FC<BreadcrumbProps> = ({items}) => {
   const lastIndex = items.length - 1;
 
   return (

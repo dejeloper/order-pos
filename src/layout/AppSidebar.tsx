@@ -5,12 +5,12 @@ import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {useSidebar} from "@/context/SidebarContext";
 import {
+  ShoppingBasket,
   ChevronDownIcon,
-  GridIcon,
-  PageIcon,
-  HorizontaLDots,
-  PlugInIcon,
-} from '@/icons';
+  Ellipsis,
+  Contact,
+  Home
+} from "lucide-react";
 
 type NavItem = {
   name: string;
@@ -21,20 +21,24 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    icon: <GridIcon />,
+    icon: <Home />,
     name: "Inicio",
     path: "/"
   },
   {
-    icon: <PageIcon />,
-    name: "Demos",
-    subItems: [{name: "Page Blank", path: "/blank", pro: false}],
+    icon: <ShoppingBasket />,
+    name: "Productos",
+    subItems: [
+      {name: "Lista de Productos", path: "/products", pro: false},
+      {name: "Crear Producto", path: "/products/create", pro: false},
+      {name: "Editar Producto", path: "/products/edit", pro: false},
+    ],
   }
 ];
 
 const othersItems: NavItem[] = [
   {
-    icon: <PlugInIcon />,
+    icon: <Contact />,
     name: "Authentication",
     subItems: [
       {name: "Registro", path: "/auth/register", pro: false},
@@ -288,7 +292,7 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Menu"
                 ) : (
-                  <HorizontaLDots />
+                  <Ellipsis />
                 )}
               </h2>
               {renderMenuItems(navItems, "main")}
@@ -304,7 +308,7 @@ const AppSidebar: React.FC = () => {
                 {isExpanded || isHovered || isMobileOpen ? (
                   "Others"
                 ) : (
-                  <HorizontaLDots />
+                  <Ellipsis />
                 )}
               </h2>
               {renderMenuItems(othersItems, "others")}
