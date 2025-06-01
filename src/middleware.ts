@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
 
 	try {
 		const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-		await jwtVerify(token, secret);
+		await jwtVerify(token, secret, {clockTolerance: 5});
 
 		return NextResponse.next();
 	} catch (error) {
