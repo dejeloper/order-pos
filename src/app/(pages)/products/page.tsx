@@ -7,6 +7,7 @@ import PagesWrapper from "@/components/common/Wrapper";
 import {useAuthStore} from "@/stores/authStore";
 import {getProductsService} from "@/services/products/getProducts";
 import {Product} from "@/interfaces/Products/products.interface";
+import FullPageLoader from "@/components/common/FullPageLoader";
 
 export default function ProductsPage() {
 	const {token} = useAuthStore();
@@ -44,7 +45,7 @@ export default function ProductsPage() {
 	return (
 		<Protected requiredPermission="view_products">
 			<PagesWrapper breadcrumbItems={breadcrumbItems} title="Lista de Productos">
-				{loading && <p>Cargando productos...</p>}
+				{loading && <FullPageLoader message="Cargando productos..." />}
 				{error && <p className="text-red-500">{error}</p>}
 
 				<ul className="mt-4 space-y-2">
