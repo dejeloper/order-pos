@@ -91,6 +91,7 @@ const AppHeader: React.FC = () => {
 
           <Link href="/" className="lg:hidden">
             <Image
+              priority
               width={154}
               height={32}
               className="dark:hidden"
@@ -99,6 +100,7 @@ const AppHeader: React.FC = () => {
               style={{aspectRatio: "955/261"}}
             />
             <Image
+              priority
               width={154}
               height={32}
               className="hidden dark:block"

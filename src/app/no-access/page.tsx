@@ -23,6 +23,7 @@ export default function NoAccessPage() {
 				<div className="mx-auto max-w-screen-sm text-center">
 					<div className="mx-auto my-4  flex items-center justify-center">
 						<Image
+							priority
 							width={154}
 							height={32}
 							className="dark:hidden"
@@ -31,6 +32,7 @@ export default function NoAccessPage() {
 							style={{aspectRatio: "955/261"}}
 						/>
 						<Image
+							priority
 							width={154}
 							height={32}
 							className="hidden dark:block"

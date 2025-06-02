@@ -256,6 +256,7 @@ const AppSidebar: React.FC = () => {
           {isExpanded || isHovered || isMobileOpen ? (
             <>
               <Image
+                priority
                 className="dark:hidden"
                 src="/images/logo/logo.png"
                 alt="Logo"
@@ -264,6 +265,7 @@ const AppSidebar: React.FC = () => {
                 style={{aspectRatio: "955/261"}}
               />
               <Image
+                priority
                 className="hidden dark:block"
                 src="/images/logo/logo-dark.png"
                 alt="Logo"
@@ -274,6 +276,7 @@ const AppSidebar: React.FC = () => {
             </>
           ) : (
             <Image
+              priority
               src="/images/logo/logo-icon.png"
               alt="Logo"
               width={32}
