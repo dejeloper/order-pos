@@ -40,17 +40,17 @@ export default function AuthLayout({
             <ThemeTogglerTwo />
           </div>
         </div>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            style: {
-              background: "#1f2937",
-              color: "#fff",
-              borderRadius: "8px",
-            },
-          }}
-        />
       </ThemeProvider>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: "#1f2937",
+            color: "#fff",
+            borderRadius: "8px",
+          },
+        }}
+      />
     </div>
   );
 }
