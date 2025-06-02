@@ -9,9 +9,9 @@ interface FullPageLoaderProps {
 
 const FullPageLoader: FC<FullPageLoaderProps> = ({message = "Cargando..."}) => {
 	return (
-		<div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-			<Loader2 className="h-12 w-12 animate-spin text-white" />
-			<p className="mt-4 text-white text-sm">{message}</p>
+		<div className="fixed inset-0 z-1000 flex flex-col items-center justify-center bg-gray-100/20 dark:bg-gray-800/20  backdrop-blur-sm">
+			<Loader2 className="h-12 w-12 animate-spin dark:text-white text-slate-700" />
+			<p className="mt-4 dark:text-white text-slate-700 text-sm">{message}</p>
 		</div>
 	);
 };
