@@ -1,7 +1,6 @@
 import {NextResponse} from "next/server";
 import type {NextRequest} from "next/server";
 import {jwtVerify} from "jose";
-// import toast from "react-hot-toast";
 
 const PUBLIC_ROUTES = ["/auth/login", "/auth/logout"];
 
@@ -23,7 +22,6 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	} catch (error) {
 		console.error("Error al verificar JWT:", error);
-		// toast.error("Error al verificar JWT. Por favor, inicia sesión nuevamente.");
 		return NextResponse.redirect(new URL("/auth/login", request.url));
 	}
 }
