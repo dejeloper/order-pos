@@ -1,35 +1,32 @@
+import axios from "axios";
+
+import axiosInstance from "@/services/axiosInstance";
 import {AuthUser} from "@/interfaces/Auth";
 
 interface LoginResponse {
 	token: string;
-	user: AuthUser
+	user: AuthUser;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const API_URL_LOGIN = `${API_URL}/login`;
+interface LoginCredentials {
+	username: string;
+	password: string;
+}
 
-export async function loginService({username, password}: {username: string; password: string}) {
+export async function loginService({username, password}: LoginCredentials): Promise<LoginResponse> {
 	try {
-		const res = await fetch(`${API_URL_LOGIN}`, {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify({username, password}),
-		});
+		const response = await axiosInstance.post<LoginResponse>("/login", {username, password});
 
-		if (!res.ok) {
-			const errorData = await res.json().catch(() => null);
-			const message = errorData?.message || "Usuario o contraseña incorrectos";
-			throw new Error(message);
-		}
-
-		const data: LoginResponse = await res.json();
-
-		if (!data.token) {
+		if (!response.data.token) {
 			throw new Error("No se recibió un token de autenticación");
 		}
 
-		return data;
+		return response.data;
 	} catch (error: unknown) {
+		if (axios.isAxiosError(error)) {
+			const message = error.response?.data?.message || "Usuario o contraseña incorrectos";
+			throw new Error(message);
+		}
 		if (error && typeof error === "object" && "message" in error) {
 			throw new Error((error as {message?: string}).message || "Error en el servicio de login");
 		}

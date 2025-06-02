@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import Protected from "@/components/common/Protected";
 import PagesWrapper from "@/components/common/Wrapper";
 import {useAuthStore} from "@/stores/authStore";
-import {fetchProducts} from "@/services/auth/products/getProducts";
+import {getProductsService} from "@/services/products/getProducts";
 import {Product} from "@/interfaces/Products/products.interface";
 
 export default function ProductsPage() {
@@ -28,7 +28,7 @@ export default function ProductsPage() {
 			setError(null);
 
 			try {
-				const productsData = await fetchProducts(token);
+				const productsData = await getProductsService();
 				setProducts(productsData);
 			} catch (error) {
 				console.error(error);
