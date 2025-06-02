@@ -28,6 +28,7 @@ export default function AuthLayout({
                     height={63}
                     src="/images/logo/logo-dark.png"
                     alt="Logo"
+                    style={{aspectRatio: "955/261"}}
                   />
                 </Link>
                 <p className="text-center text-gray-400 dark:text-white/60">

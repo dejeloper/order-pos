@@ -96,6 +96,7 @@ const AppHeader: React.FC = () => {
               className="dark:hidden"
               src="/images/logo/logo.png"
               alt="Logo"
+              style={{aspectRatio: "955/261"}}
             />
             <Image
               width={154}
@@ -103,6 +104,7 @@ const AppHeader: React.FC = () => {
               className="hidden dark:block"
               src="/images/logo/logo-dark.png"
               alt="Logo"
+              style={{aspectRatio: "955/261"}}
             />
           </Link>
 

@@ -261,6 +261,7 @@ const AppSidebar: React.FC = () => {
                 alt="Logo"
                 width={150}
                 height={40}
+                style={{aspectRatio: "955/261"}}
               />
               <Image
                 className="hidden dark:block"
@@ -268,6 +269,7 @@ const AppSidebar: React.FC = () => {
                 alt="Logo"
                 width={150}
                 height={40}
+                style={{aspectRatio: "955/261"}}
               />
             </>
           ) : (
@@ -276,6 +278,7 @@ const AppSidebar: React.FC = () => {
               alt="Logo"
               width={32}
               height={32}
+              style={{aspectRatio: "365/365"}}
             />
           )}
         </Link>
