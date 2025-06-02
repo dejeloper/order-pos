@@ -8,6 +8,7 @@ import {useAuthStore} from "@/stores/authStore";
 import {getProductsService} from "@/services/products/getProducts";
 import {Product} from "@/interfaces/Products/products.interface";
 import FullPageLoader from "@/components/common/FullPageLoader";
+import toast from "react-hot-toast";
 
 export default function ProductsPage() {
 	const {token} = useAuthStore();
@@ -30,10 +31,11 @@ export default function ProductsPage() {
 
 			try {
 				const productsData = await getProductsService();
+
 				setProducts(productsData);
 			} catch (error) {
-				console.error(error);
-				setError("Error inesperado al cargar productos");
+				setError(error + " ");
+				toast.error(error + " ");
 			} finally {
 				setLoading(false);
 			}

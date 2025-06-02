@@ -1,7 +1,22 @@
 import {Product} from "@/interfaces/Products/products.interface";
 import axiosInstance from "../axiosInstance";
+import axios from "axios";
 
 export async function getProductsService(): Promise<Product[]> {
-	const response = await axiosInstance.get("/products");
-	return response.data;
+	try {
+		const response = await axiosInstance.get("/products");
+
+		if (!response.data || !Array.isArray(response.data)) {
+			throw new Error("Formato de respuesta inválido");
+		}
+
+		return response.data;
+	} catch (error) {
+		if (axios.isAxiosError(error) && error.code === "ECONNABORTED") {
+			throw new Error("La solicitud tardó demasiado. Intentar de nuevo más tarde.");
+		}
+
+		throw new Error("Error al obtener productos. Intentar de nuevo más tarde.");
+
+	}
 }
