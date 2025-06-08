@@ -12,7 +12,19 @@ import UserDropdown from "@/components/header/UserDropdown";
 import {useAuthStore} from "@/stores/authStore";
 import ButtonsHeaderNoSession from "./ButtonsHeaderNoSession";
 
-const AppHeader: React.FC = () => {
+import {Separator} from "@/components/ui/separator";
+import PageBreadcrumb from "@/components/common/PageBreadCrumb";
+
+interface BreadcrumbItem {
+  name: string;
+  href?: string;
+}
+
+interface BreadcrumbProps {
+  items: BreadcrumbItem[];
+}
+
+const AppHeader: React.FC<BreadcrumbProps> = ({items}) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
@@ -88,6 +100,14 @@ const AppHeader: React.FC = () => {
             )}
             {/* Cross Icon */}
           </button>
+
+          <section className="lg:flex hidden">
+            <Separator
+              orientation="vertical"
+              className="mr-4 data-[orientation=vertical]:h-4"
+            />
+            <PageBreadcrumb items={items} />
+          </section>
 
           <Link href="/" className="lg:hidden">
             <Image
