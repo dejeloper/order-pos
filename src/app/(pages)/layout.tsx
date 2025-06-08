@@ -1,7 +1,6 @@
 "use client";
 
 import {useSidebar} from "@/context/SidebarContext";
-import AppHeader from "@/layout/AppHeader";
 import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
 import {Toaster} from "react-hot-toast";
@@ -26,10 +25,7 @@ export default function AdminLayout({
       <div
         className={`flex-1 transition-all duration-300 ease-in-out ${mainContentMargin}`}
       >
-        <AppHeader />
-        <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:py-6">
-          {children}
-        </div>
+        {children}
       </div>
       <Toaster
         position="top-right"
