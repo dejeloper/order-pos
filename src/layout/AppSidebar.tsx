@@ -9,7 +9,8 @@ import {
   ChevronDownIcon,
   Ellipsis,
   Contact,
-  Home
+  Home,
+  User2Icon
 } from "lucide-react";
 
 type NavItem = {
@@ -39,6 +40,12 @@ const navItems: NavItem[] = [
 
 const othersItems: NavItem[] = [
   {
+    icon: <User2Icon />,
+    name: "Usuarios",
+    subItems: [
+      {name: "Roles", path: "/admin/roles", pro: false},
+    ],
+  }, {
     icon: <Contact />,
     name: "Authentication",
     subItems: [
@@ -313,7 +320,7 @@ const AppSidebar: React.FC = () => {
                   }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
+                  "Administación"
                 ) : (
                   <Ellipsis />
                 )}
