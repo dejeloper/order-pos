@@ -1,6 +1,7 @@
-import {Product} from "@/interfaces/Products/products.interface";
-import axiosInstance from "../axiosInstance";
 import axios from "axios";
+
+import axiosInstance from "@/services/axiosInstance";
+import {Product} from "@/interfaces/Products/products.interface";
 
 export async function getProductsService(): Promise<Product[]> {
 	try {
