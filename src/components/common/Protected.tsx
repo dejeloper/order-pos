@@ -14,26 +14,27 @@ interface ProtectedProps {
 	children: React.ReactNode;
 	requiredPermission?: string;
 	requiredRole?: string;
+	onlyRender?: boolean;
 }
 
-export default function Protected({children, requiredPermission, requiredRole, }: ProtectedProps) {
+export default function Protected({children, requiredPermission, requiredRole, onlyRender = false}: ProtectedProps) {
 	const router = useRouter();
 	const {isAuthenticated, token} = useAuthStore();
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasAccess, setHasAccess] = useState(false);
 	const [isStoreReady, setIsStoreReady] = useState(false);
-	const pathname = usePathname()
+	const pathname = usePathname();
 
 	useEffect(() => {
 		setIsStoreReady(true);
 	}, []);
-
 
 	useEffect(() => {
 		if (!isStoreReady) return;
 
 		if (!isAuthenticated || !token) {
 			router.push("/auth/login");
+			setIsLoading(false);
 			return;
 		}
 
@@ -51,9 +52,11 @@ export default function Protected({children, requiredPermission, requiredRole, }
 				}
 
 				if (requiredPermission && !permissions.includes(requiredPermission)) {
-					useErrorStore.getState().setError(`Falta permiso: ${requiredPermission}`, pathname);
-					toast.error(`Acceso denegado. Falta permiso: ${requiredPermission}`);
-					router.push("/no-access");
+					if (!onlyRender) {
+						useErrorStore.getState().setError(`Falta permiso: ${requiredPermission}`, pathname);
+						toast.error(`Acceso denegado. Falta permiso: ${requiredPermission}`);
+						router.push("/no-access");
+					}
 					return;
 				}
 
@@ -61,9 +64,11 @@ export default function Protected({children, requiredPermission, requiredRole, }
 					const requiredRoles = requiredRole.split(",").map(r => r.trim());
 					const hasAnyRole = requiredRoles.includes(role);
 					if (!hasAnyRole) {
-						useErrorStore.getState().setError(`Falta rol: ${requiredRole}`, pathname);
-						toast.error(`Acceso denegado. Falta rol: ${requiredRole}`);
-						router.push("/no-access");
+						if (!onlyRender) {
+							useErrorStore.getState().setError(`Falta rol: ${requiredRole}`, pathname);
+							toast.error(`Acceso denegado. Falta rol: ${requiredRole}`);
+							router.push("/no-access");
+						}
 						return;
 					}
 				}
@@ -74,20 +79,22 @@ export default function Protected({children, requiredPermission, requiredRole, }
 				useErrorStore.getState().setError("Error al verificar el acceso. Por favor, inicia sesión nuevamente.", pathname);
 				toast.error("Error al verificar el acceso. Por favor, inicia sesión nuevamente.");
 				setHasAccess(false);
-				router.push("/auth/login");
+				if (onlyRender) router.push("/auth/login");
 			} finally {
 				setIsLoading(false);
 			}
 		};
 
 		verifyAccess();
-	}, [isStoreReady,
+	}, [
+		isStoreReady,
 		isAuthenticated,
 		token,
 		requiredPermission,
 		requiredRole,
 		router,
-		pathname
+		pathname,
+		onlyRender
 	]);
 
 	if (isLoading) {
@@ -95,6 +102,7 @@ export default function Protected({children, requiredPermission, requiredRole, }
 	}
 
 	if (!hasAccess) {
+		if (onlyRender) return null;
 		return <FullPageLoader message="Verificando acceso…" />;
 	}
 
