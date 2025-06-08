@@ -8,16 +8,12 @@ export default function HomePage() {
     {name: "Inicio"}
   ];
 
+  const title = "Bienvenidos a la Página de Inicio";
+  const subtitle = "A continuación encontrará los accesos a las secciones más usadas de la aplicación.";
 
   return (
-    <PagesWrapper breadcrumbItems={breadcrumbItems}>
-      <h3 className="mb-2 font-semibold text-theme-xl sm:text-2xl text-center">
-        Bienvenidos a la Página de Inicio
-      </h3>
-
-      <span>A continuación encontrará los accesos a las secciones más usadas de la aplicación.</span>
+    <PagesWrapper breadcrumbItems={breadcrumbItems} title={title} subtitle={subtitle}>
       <IsAuthenticated />
-
     </PagesWrapper>
   );
 }

@@ -22,6 +22,9 @@ export default function ProductsPage() {
 		{name: "Lista de Productos"},
 	];
 
+	const title = "Lista de Productos"
+	const subtitle = "Gestione fácilmente los productos del sistema";
+
 	useEffect(() => {
 		if (!token) return;
 
@@ -46,7 +49,7 @@ export default function ProductsPage() {
 
 	return (
 		<Protected requiredPermission="view_products">
-			<PagesWrapper breadcrumbItems={breadcrumbItems} title="Lista de Productos">
+			<PagesWrapper breadcrumbItems={breadcrumbItems} title={title} subtitle={subtitle}>
 				{loading && <FullPageLoader message="Cargando productos..." />}
 				{error && <p className="text-red-500">{error}</p>}
 
