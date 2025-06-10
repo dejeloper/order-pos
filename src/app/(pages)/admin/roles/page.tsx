@@ -9,22 +9,65 @@ import Protected from "@/components/common/Protected";
 import PagesWrapper from "@/components/common/Wrapper";
 
 import {getRolesService} from "@/services/admin/roles/getRoles";
-import {Role} from "@/interfaces/Admin/roles.interface";
+import {Permission, Role} from "@/interfaces/Admin/roles.interface";
 import {Pencil, Shield, Trash2, Users} from "lucide-react";
 
 import {Button} from "@/components/ui/button";
 import {Badge} from "@/components/ui/badge";
 import {Card, CardHeader, CardTitle, CardDescription, CardContent} from "@/components/ui/card";
 import RoleAddActions from "@/components/admin/roles/role.add";
-
-
+import {RoleForm} from "@/components/admin/roles/role.form";
 
 export default function RolesPage() {
 	const {token} = useAuthStore();
 	const [roles, setRoles] = useState<Role[]>([]);
+	const [permissions, setPermissions] = useState<Permission[]>([])
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [isFormOpen, setIsFormOpen] = useState(false)
+	const [editingRole, setEditingRole] = useState<Role | null>(null)
 
+	const getUniquePermissions = (roles: Role[]) => {
+		const permisosMap = new Map();
+
+		roles.forEach(role => {
+			role.permissions.forEach(permission => {
+				if (!permisosMap.has(permission.id)) {
+					permisosMap.set(permission.id, permission);
+				}
+			});
+		});
+
+		return Array.from(permisosMap.values());
+	}
+
+	const handleCreateRole = (roleData: Omit<Role, "id" | "created_at" | "updated_at" | "permissions">) => {
+		const newPermission: Permission[] = permissions;
+		const newRole: Role = {
+			...roleData,
+			id: Math.max(...roles.map((r) => r.id)) + 1,
+			created_at: new Date(),
+			updated_at: new Date(),
+			permissions: newPermission
+		}
+		setRoles([...roles, newRole])
+		setIsFormOpen(false)
+	}
+
+	const handleUpdateRole = (roleData: Omit<Role, "id" | "created_at" | "updated_at" | "permissions">) => {
+		if (!editingRole) return
+
+		const updatedRole: Role = {
+			...roleData,
+			id: editingRole.id,
+			created_at: editingRole.created_at,
+			updated_at: new Date(),
+			permissions: editingRole.permissions
+		}
+
+		setRoles(roles.map((role) => (role.id === editingRole.id ? updatedRole : role)))
+		setEditingRole(null)
+	}
 
 	const breadcrumbItems = [
 		{name: "Home", href: "/"},
@@ -41,8 +84,11 @@ export default function RolesPage() {
 
 			try {
 				const rolesData = await getRolesService();
+				const permissionsData = getUniquePermissions(rolesData);
 
 				setRoles(rolesData);
+				setPermissions(permissionsData);
+
 			} catch (error) {
 				setError(error + " ");
 				toast.error(error + " ");
@@ -56,7 +102,7 @@ export default function RolesPage() {
 
 	return (
 		<Protected requiredPermission="view_roles">
-			<PagesWrapper breadcrumbItems={breadcrumbItems} title="Gestión de Roles" subtitle="Administra los roles y permisos del sistema" actions={<RoleAddActions />}>
+			<PagesWrapper breadcrumbItems={breadcrumbItems} title="Gestión de Roles" subtitle="Administra los roles y permisos del sistema" actions={<RoleAddActions onAdd={() => setIsFormOpen(true)} />}>
 
 				{loading && <FullPageLoader message="Procesando..." />}
 				{error && <p className="text-red-500 mb-4">{error}</p>}
@@ -84,7 +130,7 @@ export default function RolesPage() {
 									</div>
 									<div className="flex items-center gap-2">
 										<Protected requiredPermission="edit_roles" onlyRender={true}>
-											<Button variant="outline" size="sm" className="gap-2">
+											<Button variant="outline" size="sm" onClick={() => setEditingRole(role)} className="gap-2">
 												<Pencil className="h-4 w-4" />
 												Editar
 											</Button>
@@ -114,7 +160,7 @@ export default function RolesPage() {
 												<div className="flex flex-wrap gap-2">
 													{role.permissions.map((permission) => (
 														<Badge key={permission.id} variant="secondary" className="text-xs">
-															{(permission.name)}
+															{(permission.label)}
 														</Badge>
 													))}
 												</div>
@@ -136,6 +182,20 @@ export default function RolesPage() {
 				</div>
 
 			</PagesWrapper>
+
+
+
+			<RoleForm
+				isOpen={isFormOpen || !!editingRole}
+				onClose={() => {
+					setIsFormOpen(false)
+					setEditingRole(null)
+				}}
+				onSubmit={editingRole ? handleUpdateRole : handleCreateRole}
+				role={editingRole}
+				permissions={permissions}
+				title={editingRole ? "Editar Rol" : "Crear Nuevo Rol"}
+			/>
 		</Protected>
 	);
 }

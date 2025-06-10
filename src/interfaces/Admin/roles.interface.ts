@@ -15,10 +15,12 @@ export enum GuardName {
 export interface Permission {
 	id: number;
 	name: string;
+	label: string;
+	type: string;
 	guard_name: GuardName;
 	created_at: Date;
 	updated_at: Date;
-	pivot: Pivot;
+	pivot?: Pivot;
 }
 
 export interface Pivot {
